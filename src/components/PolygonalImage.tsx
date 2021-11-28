@@ -37,8 +37,8 @@ const isPointInsideRegion = (
 
   pointPairs.push([points[points.length - 1], points[0]])
 
-  const intersections = pointPairs.map(([p1, p2]) =>
-    findIntersection(p1, p2, y)
+  const intersections = _.compact(
+    pointPairs.map(([p1, p2]) => findIntersection(p1, p2, y))
   )
 
   intersections.push(x)
@@ -56,7 +56,7 @@ const detectRegion = (regions: Regions, coordX: number, coordY: number) => {
     }
   )
 
-  return _.compact(matches)[0]
+  return matches[0]
 }
 
 type PolygonalImageProps = {
