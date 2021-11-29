@@ -12,12 +12,12 @@ import _ from 'lodash'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const findIntersection = (p1: Point, p2: Point, y: number) => {
-  // console.log("[", p1.x, p1.y, "], [", p2.x, p2.y, "]", y);
   if ((p1.y < y && p2.y < y) || (p1.y > y && p2.y > y)) {
     return undefined
   } else {
     if (p1.x === p2.x) return p1.x //vertical line intersects @ x-value
 
+    // Otherwise calculate the x of intersection point where ax+b = y
     const a = (p2.y - p1.y) / (p2.x - p1.x)
     const b = p1.y - a * p1.x
 
@@ -37,12 +37,13 @@ const isPointInsideRegion = (
 
   pointPairs.push([points[points.length - 1], points[0]])
 
-  const intersections = _.compact(
-    pointPairs.map(([p1, p2]) => findIntersection(p1, p2, y))
-  )
+  const intersections = _.without(
+    pointPairs.map(([p1, p2]) => findIntersection(p1, p2, y)),
+    undefined
+  ) as number[]
 
   intersections.push(x)
-  const sorted = intersections.sort((a, b) => a - b) // sort() sorts alphabetically ;)
+  const sorted = intersections.sort((a, b) => a - b) // plain sort() would sort alphabetically
 
   const index = sorted.findIndex((i) => i === x)
   return index % 2 === 1
