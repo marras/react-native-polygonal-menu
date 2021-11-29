@@ -1,15 +1,20 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import {
-  Dimensions,
   ImageBackground,
   StyleSheet,
   Image,
   View,
   ImageSourcePropType,
   TouchableOpacity,
+  LayoutChangeEvent,
 } from 'react-native'
 import _ from 'lodash'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const findIntersection = (p1: Point, p2: Point, y: number) => {
   if ((p1.y < y && p2.y < y) || (p1.y > y && p2.y > y)) {
@@ -44,7 +49,6 @@ const isPointInsideRegion = (
 
   intersections.push(x)
   const sorted = intersections.sort((a, b) => a - b) // plain sort() would sort alphabetically
-
   const index = sorted.findIndex((i) => i === x)
   return index % 2 === 1
 }
@@ -76,16 +80,23 @@ export const PolygonalImage = ({
   imageWidth,
   children,
 }: PolygonalImageProps) => {
-  const insets = useSafeAreaInsets()
-  const { width: totalWidth, height: totalHeight } = Dimensions.get('window')
+  const [renderedDims, setRenderedDims] = useState({ width: 0, height: 0 })
 
   const { width: imgWidth, height: imgHeight } = useMemo(
     () => Image.resolveAssetSource(image),
     []
   )
 
-  const height = imageHeight || totalHeight - insets.bottom - insets.top
-  const width = imageWidth || totalWidth
+  const height = imageHeight || renderedDims.height
+  const width = imageWidth || renderedDims.width
+
+  const handleLayout = useCallback(
+    (e: LayoutChangeEvent) => {
+      const { width, height, x, y } = e.nativeEvent.layout
+      setRenderedDims({ width, height })
+    },
+    [setRenderedDims]
+  )
 
   // Show a warning if the rendered image is wider than the original
   // (i.e. the image is cropped vertically). TODO: use a different region detection
@@ -102,16 +113,19 @@ export const PolygonalImage = ({
     }
   }, [height, width, imgHeight, imgWidth])
 
-  const handleClick = useCallback((e) => {
-    const { locationX: x, locationY: y } = e.nativeEvent
-    const scale = imgHeight / height
-    const horizMargin = (imgWidth - width * scale) / 2 // obustronny
+  const handleClick = useCallback(
+    (e) => {
+      const { locationX: x, locationY: y } = e.nativeEvent
+      const scale = imgHeight / height
+      const horizMargin = (imgWidth - width * scale) / 2 // obustronny
 
-    const coordX = horizMargin + x * scale
-    const coordY = y * scale
+      const coordX = horizMargin + x * scale
+      const coordY = y * scale
 
-    onClick(detectRegion(availableRegions, coordX, coordY))
-  }, [])
+      onClick(detectRegion(availableRegions, coordX, coordY))
+    },
+    [height, width, imgHeight, imgWidth, availableRegions]
+  )
 
   const containerStyle =
     imageHeight || imageWidth ? { height, width } : { flex: 1 }
@@ -123,7 +137,12 @@ export const PolygonalImage = ({
         style={{ flex: 1 }}
         activeOpacity={1}
       >
-        <ImageBackground source={image} resizeMode='cover' style={styles.image}>
+        <ImageBackground
+          source={image}
+          resizeMode='cover'
+          style={styles.image}
+          onLayout={handleLayout}
+        >
           {children}
         </ImageBackground>
       </TouchableOpacity>
