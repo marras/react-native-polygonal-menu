@@ -16,6 +16,8 @@
 2. Using a graphics tool (e.g. GIMP), determine the edges of the polygonal
    buttons in your menu and store them as array of vertices (see
    `examples/assets/mainRegions.json`
+
+   NOTE: the coordinates of the verties should be given in the units of the original image (pixels).
 3. Insert the `<PolygonalMenu>` component into your app
 
 ``` typescript
