@@ -56,8 +56,7 @@ const detectRegion = (regions: Regions, coordX: number, coordY: number) => {
       return isPointInsideRegion(region, coordX, coordY) ? name : null
     }
   )
-
-  return matches[0] || '_notFound'
+  return _.compact(matches)[0] || '_notFound'
 }
 
 type PolygonalImageProps = {
