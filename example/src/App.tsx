@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import PolygonalMenu from 'react-native-polygonal-menu'
 
 import mainScreenRegions from './regions'
@@ -20,26 +20,33 @@ export const App = () => {
   }
 
   return (
-    <PolygonalMenu
-      regions={mainScreenRegions}
-      highlightedRegions={HIGHLIGHTED_IMGS}
-      backgroundImage={require('../assets/all_gray.png')}
-      overlayStyle={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      height={500}
-      width={300}
-      onSelectRegion={handleSelect}
-    >
-      <TouchableOpacity onPress={handleClick}>
-        <View style={{ width: 20, height: 20, backgroundColor: '#6bf' }}>
-          <Text>Clicking this button</Text>
-          <Text>doesn't select a region</Text>
-        </View>
-      </TouchableOpacity>
-    </PolygonalMenu>
+    <View style={styles.container}>
+      <PolygonalMenu
+        regions={mainScreenRegions}
+        highlightedRegions={HIGHLIGHTED_IMGS}
+        backgroundImage={require('../assets/all_gray.png')}
+        overlayStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        height={400}
+        width={300}
+        onSelectRegion={handleSelect}
+      >
+        <TouchableOpacity onPress={handleClick}>
+          <View style={styles.overlayButton}>
+            <Text>Clicking this button</Text>
+            <Text>doesn't select a region</Text>
+          </View>
+        </TouchableOpacity>
+      </PolygonalMenu>
+    </View>
   )
 }
 
 export default App
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  overlayButton: { backgroundColor: '#6bf' },
+})
