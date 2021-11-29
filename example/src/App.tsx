@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { TouchableOpacity, View, Text } from 'react-native'
 import PolygonalMenu from 'react-native-polygonal-menu'
 
-import mainScreenRegions from '../assets/mainRegions.json'
+import mainScreenRegions from './regions'
 
 const HIGHLIGHTED_IMGS = {
   forest: require('../assets/forest_high.png'),
@@ -29,6 +29,7 @@ export const App = () => {
         alignItems: 'center',
       }}
       height={500}
+      width={300}
       onSelectRegion={handleSelect}
     >
       <TouchableOpacity onPress={handleClick}>
