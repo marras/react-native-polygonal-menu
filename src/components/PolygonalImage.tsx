@@ -57,7 +57,7 @@ const detectRegion = (regions: Regions, coordX: number, coordY: number) => {
     }
   )
 
-  return matches[0]
+  return matches[0] || '_notFound'
 }
 
 type PolygonalImageProps = {
