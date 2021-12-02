@@ -2,7 +2,7 @@
 
 ### Display and handle clicks on menus composed of non-rectangular buttons
 
-![](docs/usage.mov)
+![](docs/usage.gif)
 
 #### Installation
 
