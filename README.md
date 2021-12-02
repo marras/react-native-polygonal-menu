@@ -14,7 +14,7 @@ Imagine an image consisting of 3 parts (we'll call them _regions_ here): a fores
 
 1. Get a background image composed of several regions
 
-![](docs/all_grey.png)
+![](docs/regions.png)
 
 2. Using a graphics tool (e.g. GIMP), determine the positions of the
    edges of the polygonal buttons in your menu and store them as array of vertices.
