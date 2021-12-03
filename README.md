@@ -4,7 +4,7 @@
 
 Imagine an image consisting of 3 parts (we'll call them _regions_ here): a forest, a lake, and a city. The idea of the `<PolygonalMenu>` component is to detect clicks on each region and let the main program handle the user choice.
 
-![](docs/usage.gif)
+![](https://raw.githubusercontent.com/marras/react-native-polygonal-menu/master/docs/usage.gif)
 
 #### Installation
 
@@ -14,14 +14,14 @@ Imagine an image consisting of 3 parts (we'll call them _regions_ here): a fores
 
 1. Get a background image composed of several regions
 
-![](docs/regions.png)
+![](https://raw.githubusercontent.com/marras/react-native-polygonal-menu/master/docs/regions.png)
 
 2. Using a graphics tool (e.g. GIMP), determine the positions of the
    edges of the polygonal buttons in your menu and store them as array of vertices.
 
    NOTE: the coordinates of the vertices should be given in the units of the original image (pixels).
 
-![](docs/vertices.png)
+![](https://raw.githubusercontent.com/marras/react-native-polygonal-menu/master/docs/vertices.png)
 
 For example, in our case, the borders of the forest regions form a triangle made of point #1, #2 and #3, while the borders of the lake are the segments between points #2, #4, #5 and #7.
 
