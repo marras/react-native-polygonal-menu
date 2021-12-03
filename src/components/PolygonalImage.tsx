@@ -92,7 +92,7 @@ export const PolygonalImage = ({
 
   const handleLayout = useCallback(
     (e: LayoutChangeEvent) => {
-      const { width, height, x, y } = e.nativeEvent.layout
+      const { width, height } = e.nativeEvent.layout
       setRenderedDims({ width, height })
     },
     [setRenderedDims]
@@ -117,7 +117,7 @@ export const PolygonalImage = ({
     (e) => {
       const { locationX: x, locationY: y } = e.nativeEvent
       const scale = imgHeight / height
-      const horizMargin = (imgWidth - width * scale) / 2 // obustronny
+      const horizMargin = (imgWidth - width * scale) / 2 // margin on both sides
 
       const coordX = horizMargin + x * scale
       const coordY = y * scale
@@ -127,8 +127,11 @@ export const PolygonalImage = ({
     [height, width, imgHeight, imgWidth, availableRegions]
   )
 
-  const containerStyle =
-    imageHeight || imageWidth ? { height, width } : { flex: 1 }
+  const containerStyle = [
+    imageHeight ? { height: imageHeight } : {},
+    imageWidth ? { width: imageWidth } : {},
+    !imageHeight && !imageWidth ? { flex: 1 } : {},
+  ]
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -139,7 +142,6 @@ export const PolygonalImage = ({
       >
         <ImageBackground
           source={image}
-          resizeMode='cover'
           style={styles.image}
           onLayout={handleLayout}
         >
@@ -155,5 +157,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'center',
+    resizeMode: 'cover',
   },
 })
