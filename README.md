@@ -69,7 +69,7 @@ const HIGHLIGHTED_IMGS = {
 #### Notes / Caveats
 
 - **Make sure your base image is wide enough to cover the entire width of the rendered area.** The region detection algorithm currently doesn't support menus based on vertically cropped images.
-- You can pass `height` and/or `width` as optional props to the `<PolygonalMenu>` component. If these values are not defined, the module assumes we want to use `{flex: 1}` to fill the whole available space.
+- You can pass `height` and `width` as optional props to the `<PolygonalMenu>` component. If these values are not defined, the module assumes we want to use `{flex: 1}` to fill the whole available space.
 - The regions must not overlap each other. They can share some vertices (like in the example), or be separated - in this case, the `onSelectRegion` callback will receive `"_notFound"` as the argument.
 
 #### Thanks
