@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, {
   ReactNode,
   useCallback,
@@ -6,15 +7,16 @@ import React, {
   useState,
 } from 'react'
 import {
-  ImageBackground,
-  StyleSheet,
   Image,
-  View,
+  ImageBackground,
   ImageSourcePropType,
-  TouchableOpacity,
   LayoutChangeEvent,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native'
-import _ from 'lodash'
+
+import { Point, Regions } from '../types'
 
 const findIntersection = (p1: Point, p2: Point, y: number) => {
   if ((p1.y < y && p2.y < y) || (p1.y > y && p2.y > y)) {
@@ -84,11 +86,8 @@ export const PolygonalImage = ({
 
   const { width: imgWidth, height: imgHeight } = useMemo(
     () => Image.resolveAssetSource(image),
-    []
+    [image]
   )
-
-  const height = imageHeight || renderedDims.height
-  const width = imageWidth || renderedDims.width
 
   const handleLayout = useCallback(
     (e: LayoutChangeEvent) => {
@@ -97,6 +96,9 @@ export const PolygonalImage = ({
     },
     [setRenderedDims]
   )
+
+  const height = imageHeight || renderedDims.height
+  const width = imageWidth || renderedDims.width
 
   // Show a warning if the rendered image is wider than the original
   // (i.e. the image is cropped vertically). TODO: use a different region detection
@@ -124,7 +126,7 @@ export const PolygonalImage = ({
 
       onClick(detectRegion(availableRegions, coordX, coordY))
     },
-    [height, width, imgHeight, imgWidth, availableRegions]
+    [height, width, imgHeight, imgWidth, availableRegions, onClick]
   )
 
   const containerStyle = [
@@ -137,7 +139,7 @@ export const PolygonalImage = ({
     <View style={[styles.container, containerStyle]}>
       <TouchableOpacity
         onPress={handleClick}
-        style={{ flex: 1 }}
+        style={styles.touchableBackground}
         activeOpacity={1}
       >
         <ImageBackground
@@ -154,6 +156,7 @@ export const PolygonalImage = ({
 
 const styles = StyleSheet.create({
   container: { backgroundColor: '#000' },
+  touchableBackground: { flex: 1 },
   image: {
     flex: 1,
     justifyContent: 'center',

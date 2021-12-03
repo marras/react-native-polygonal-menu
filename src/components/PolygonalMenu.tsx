@@ -6,7 +6,8 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import _ from 'lodash'
+
+import { Regions } from '../types'
 import { PolygonalImage } from './PolygonalImage'
 
 type PolygonalMenuProps = {
@@ -32,10 +33,13 @@ export const PolygonalMenu = ({
 }: PolygonalMenuProps) => {
   const [selectedRegion, setSelectedRegion] = useState(null)
 
-  const handleClick = useCallback((region) => {
-    setSelectedRegion(region)
-    if (onSelectRegion) onSelectRegion(region)
-  }, [])
+  const handleClick = useCallback(
+    (region) => {
+      setSelectedRegion(region)
+      if (onSelectRegion) onSelectRegion(region)
+    },
+    [onSelectRegion]
+  )
 
   const finalOverlayStyle = [
     styles.overlay,
@@ -55,7 +59,7 @@ export const PolygonalMenu = ({
       {selectedRegion && (
         <Image
           source={highlightedRegions[selectedRegion]}
-          style={{ zIndex: 5, flex: 1 }}
+          style={styles.highlightedImage}
           width={width}
           resizeMode='cover'
         />
@@ -73,5 +77,9 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     zIndex: 10,
+  },
+  highlightedImage: {
+    flex: 1,
+    zIndex: 5,
   },
 })
