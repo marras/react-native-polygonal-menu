@@ -1,11 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   TouchableOpacity,
   View,
   Text,
   StyleSheet,
-  ImageBackground,
-  Image,
   SafeAreaView,
 } from 'react-native'
 import PolygonalMenu from 'react-native-polygonal-menu'
@@ -18,14 +16,20 @@ const HIGHLIGHTED_IMGS = {
   city: require('../assets/city_high.png'),
 }
 
+type AvailableRegions = keyof typeof HIGHLIGHTED_IMGS
+
 export const App = () => {
-  const handleSelect = (region: string) => {
+  const handleSelect = (region: AvailableRegions) => {
     console.log('SELECTED REGION:', region)
+    setSelectedRegion(region)
   }
 
   const handleClick = () => {
     console.log('Button clicked!')
   }
+
+  // Start with a pre-selected city region
+  const [selectedRegion, setSelectedRegion] = useState<AvailableRegions>('city')
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,6 +45,7 @@ export const App = () => {
           height={500}
           width={300}
           onSelectRegion={handleSelect}
+          selectedRegion={selectedRegion}
         >
           <TouchableOpacity onPress={handleClick}>
             <View style={styles.overlayButton}>
