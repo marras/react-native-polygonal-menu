@@ -19,6 +19,7 @@ type PolygonalMenuProps<R extends string> = {
   overlayStyle?: ViewStyle
   children?: ReactNode
   onSelectRegion?: (region: R) => void
+  selectedRegion?: R
 }
 
 export const PolygonalMenu = <R extends string>({
@@ -30,8 +31,14 @@ export const PolygonalMenu = <R extends string>({
   overlayStyle,
   children,
   onSelectRegion,
+  selectedRegion: externalSelectedRegion,
 }: PolygonalMenuProps<R>) => {
-  const [selectedRegion, setSelectedRegion] = useState(null)
+  const [selectedRegion, setSelectedRegion] = useState(externalSelectedRegion)
+
+  const actualRegion =
+    externalSelectedRegion === undefined
+      ? selectedRegion
+      : externalSelectedRegion
 
   const handleClick = useCallback(
     (region) => {
@@ -56,9 +63,9 @@ export const PolygonalMenu = <R extends string>({
       imageHeight={height}
       imageWidth={width}
     >
-      {selectedRegion && (
+      {actualRegion && highlightedRegions && (
         <Image
-          source={highlightedRegions[selectedRegion]}
+          source={highlightedRegions[actualRegion]}
           style={styles.highlightedImage}
           width={width}
           resizeMode='cover'
