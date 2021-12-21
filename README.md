@@ -66,11 +66,32 @@ const HIGHLIGHTED_IMGS = {
 />
 ```
 
+#### Using PolygonalMenu as a controlled component (keeping track of what's highlighted)
+
+By default, PolygonalMenu keeps the currently highlighted region in its internal state. However, sometimes we might want to show the menu with one of the regions selected by default, or use the PolygonalMenu to select a setting that is meant to have lasting effects (with the latest selection highlighted). In this case, you can pass `selectedRegion` as a prop and handle its state manually in the parent component. The `selectedRegion` must match one of the `highlightedRegions` object keys.
+
+```typescript
+const HIGHLIGHTED_IMGS = {
+  forest: require('../assets/forest_high.png'),
+  // The keys must match the region names
+}
+
+const [selectedRegion, setSelectedRegion] = useState<AvailableRegions>('forest')
+
+<PolygonalMenu
+  regions={regions}
+  backgroundImage={require('../assets/main-background.png')}
+  highlightedRegions={HIGHLIGHTED_IMGS}
+  onSelectRegion={handleSelect}
+  selectedRegion={selectedRegion}
+/>
+```
+
 #### Notes / Caveats
 
 - **Make sure your base image is wide enough to cover the entire width of the rendered area.** The region detection algorithm currently doesn't support menus based on vertically cropped images.
 - You can pass `height` and `width` as optional props to the `<PolygonalMenu>` component. If these values are not defined, the module assumes we want to use `{flex: 1}` to fill the whole available space.
-- The regions must not overlap each other. They can share some vertices (like in the example), or be separated - in this case, the `onSelectRegion` callback will receive `"_notFound"` as the argument.
+- The regions must not overlap each other. They can share some vertices (like in the example), or be separated. In the latter case, when clicking on a part of the screen which doesn't belong to any defined region, the `onSelectRegion` callback will receive `"_notFound"` as the argument.
 
 #### Thanks
 
