@@ -10,18 +10,18 @@ import {
 import { Regions } from '../types'
 import { PolygonalImage } from './PolygonalImage'
 
-type PolygonalMenuProps = {
+type PolygonalMenuProps<R extends string> = {
   regions: Regions
-  highlightedRegions: Record<string, any>
+  highlightedRegions?: Record<R, any>
   backgroundImage: ImageSourcePropType
   height?: number
   width?: number
   overlayStyle?: ViewStyle
   children?: ReactNode
-  onSelectRegion?: (region: string) => void
+  onSelectRegion?: (region: R) => void
 }
 
-export const PolygonalMenu = ({
+export const PolygonalMenu = <R extends string>({
   regions,
   highlightedRegions,
   backgroundImage,
@@ -30,7 +30,7 @@ export const PolygonalMenu = ({
   overlayStyle,
   children,
   onSelectRegion,
-}: PolygonalMenuProps) => {
+}: PolygonalMenuProps<R>) => {
   const [selectedRegion, setSelectedRegion] = useState(null)
 
   const handleClick = useCallback(
