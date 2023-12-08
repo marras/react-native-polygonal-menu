@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   highlightedImage: {
-    flex: 1,
+    height: '100%',
+    width: '100%',
     zIndex: 5,
   },
 })
